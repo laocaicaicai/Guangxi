@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/js/esri/css/main.css" />
+	<link rel="stylesheet" href="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css" />
+	<script src="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/init.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.js"></script>
+	<style>
+		html {
+			height: 100%;
+			margin: 0;
+		}
+
+		body {
+			height: 100%;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<button id="del" style="position:absolute;top:50px;left:50px;z-index:5000">删除</button>
+	<div id="googleMap" style="height: 100%;"></div>
+</body>
+<script>
+	var mapT
+
+	// var gra;
+	var GraphicsLayer
+
+	var googlePath = "https://www.google.cn/maps/vt/lyrs=y@112&hl=zh-CN&gl=cn&x=${col}&y=${row}&z=${level}&s=Gali";
+
+	function createPlogan(arr) {
+		require([
+			"esri/map",
+			"esri/graphic",
+			"esri/layers/WebTiledLayer",
+			"dojo/parser",
+			"esri/layers/GraphicsLayer",
+			"dojo/domReady!"
+		], function (Map, Graphic, WebTiledLayer, parser, GraphicsLayer) {
+			parser.parse();
+		   mapT = new Map("googleMap", {
+				center: [108.243685, 22.950986],
+				zoom: 10,
+				logo: false,
+				minZoom: 3
+			});
+			var cycleMaps = new WebTiledLayer(googlePath);
+			mapT.addLayer(cycleMaps);
+			var myPolygon = {
+				"geometry": {
+					"rings":arr,
+					"spatialReference": {
+						"wkid": 4326
+					}
+				},
+				"symbol": {
+					"color": [255, 0, 0, 64],
+					"outline": {
+						"color": [255, 0, 0, 255],
+						"width": 1,
+						"type": "esriSLS",
+						"style": "esriSLSSolid"
+					},
+					"type": "esriSFS",
+					"style": "esriSFSSolid"
+				}
+			};
+			var gra = new Graphic(myPolygon);
+			mapT.graphics.add( gra)
+			// var GraphicsLayer = new GraphicsLayer()
+			// mapT.addLayer(GraphicsLayer)
+			// GraphicsLayer.add(gra)
+			
+
+		});
+	}
+	function getlonloat() {
+            var z =0.01;
+            var recoArr = [];
+            var arrall = [
+                [108.243685, 22.950986],
+                [108.945082, 23.843562],
+                [108.655325, 23.360352],
+                [107.997622, 23.139345],
+                [108.365567, 21.865771]
+            ];
+            for (var i = 0; i < arrall.length; i++) {
+                var longitude = arrall[i][0];
+                var latitude = arrall[i][1];
+                var x1 = longitude - z; //左上角点的经度
+                var y1 = latitude + z; //左上角点的纬度
+                var x2 = longitude + z; //右上角点的经度
+                var y2 = latitude + z; //左上角点的纬度
+                var x3 = longitude + z; //右下角点的经度
+                var y3 = latitude - z; //右下角点的纬度
+                var x4 = longitude - z; //左下角点的经度
+                var y4 = latitude - z; //左下角点的纬度
+                var newArr =[ [
+                    [x1, y1],
+                    [x2, y2],
+                    [x3, y3],
+                    [x4, y4],
+                    [x1, y1]
+                ]]
+                recoArr.push(newArr);
+            }
+            return recoArr;
+  }
+
+     var arr =  getlonloat();
+	 for(var i =0;i<arr.length;i++) {
+		 console.log(JSON.stringify(arr[i]))
+	createPlogan(arr[i])
+	 }
+	//  console.log(JSON.stringify(arr[0]))
+	
+</script>
+
+</html>

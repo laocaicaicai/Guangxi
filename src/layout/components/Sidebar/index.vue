@@ -150,6 +150,7 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .side-nav {
+   padding-bottom:100px;
   ul {
     list-style: none;
     text-align: left;
@@ -160,10 +161,10 @@ export default {
   }
   li {
     color: rgb(166, 172, 192);
-     border-top: none!important;
+    border-top: none!important;
   }
   li:last-of-type {
-    border-bottom: 0.1px solid #909399;
+   // border-bottom: 0.1px solid #909399;
   }
   li > span {
     cursor: pointer;

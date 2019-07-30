@@ -200,6 +200,9 @@ export default {
               "2019-6-11",
               "2019-6-12"
             ],
+            axisLabel:{
+    		       interval: 0
+    	      },
             name: "日期"
           }
         ],

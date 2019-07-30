@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/js/esri/css/main.css" />
+		<link rel="stylesheet" href="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css" />
+		<script src="http://192.168.2.72:8080/arcgis_js_api/library/3.9/3.9/init.js"></script>
+		<style>
+			html {
+				height: 100%;
+				margin: 0;
+			}
+			
+			body {
+				height: 100%;
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="googleMap" style="height: 100%;"></div>
+	</body>
+	<script>
+		var googlePath = "https://www.google.cn/maps/vt/lyrs=y@112&hl=zh-CN&gl=cn&x=${col}&y=${row}&z=${level}&s=Gali";
+		var mapT;
+		require([
+			"esri/map",
+			"esri/graphic",
+			"esri/layers/WebTiledLayer",
+			"dojo/parser",
+			"dojo/domReady!"
+		], function(Map, Graphic, WebTiledLayer, parser) {
+			parser.parse();
+			mapT = new Map("googleMap", {
+				center: [108.23, 22.96],
+				zoom: 8,
+				logo: false,
+				minZoom: 3
+			});
+			var cycleMaps = new WebTiledLayer(googlePath);
+			mapT.addLayer(cycleMaps);
+			setPloygon();
+		});
+
+		function setPloygon() {
+			require([
+					"esri/graphic",
+					"dojo/domReady!"
+				], function(Graphic) {
+					var arr = getlonlat();
+					for(var i = 0; i <arr.length; i++) {
+						var tempArr = arr[i]; 
+						console.log("=="+tempArr); 
+						var myPolygon = {
+							"geometry": {
+								"rings": [
+									tempArr
+								],
+								"spatialReference": {
+									"wkid": 4326
+								}
+							},
+							"symbol": {
+								"color": [255, 0, 0,150],
+								"outline": {
+									"color": [255, 0, 0,150],
+									"width": 1
+								},
+								"type": "esriSFS",
+								"style": "esriSFSSolid"
+							}
+						};
+						var gra = new Graphic(myPolygon);
+						mapT.graphics.add(gra);
+					}
+				});
+
+			}
+
+			function getlonlat() {
+				var z = 0.01;
+				var recoArr = [];
+				var arrall = [
+					[108.243685, 22.950986],
+					[108.945082, 23.843562],
+					[108.655325, 23.360352],
+					[107.997622, 23.139345],
+					[108.365567, 21.865771]
+				];
+				for(var i = 0; i < arrall.length; i++) {
+					var longitude = arrall[i][0];
+					var latitude = arrall[i][1];
+					var x1 = longitude - z; //左上角点的经度
+					var y1 = latitude + z; //左上角点的纬度
+					var x2 = longitude + z; //右上角点的经度
+					var y2 = latitude + z; //左上角点的纬度
+					var x3 = longitude + z; //右下角点的经度
+					var y3 = latitude - z; //右下角点的纬度
+					var x4 = longitude - z; //左下角点的经度
+					var y4 = latitude - z; //左下角点的纬度
+					var newArr = [
+						[x1, y1],
+						[x2, y2],
+						[x3, y3],
+						[x4, y4],
+						[x1, y1]
+					];
+					recoArr.push(newArr);
+				}
+				return recoArr;
+			}
+	</script>
+
+</html>

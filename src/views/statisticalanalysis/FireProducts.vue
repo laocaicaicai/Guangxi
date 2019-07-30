@@ -247,7 +247,7 @@ export default {
             type: "pie",
             selectedMode: "single",
             radius: [0, "30%"],
-
+            
             label: {
               normal: {
                 position: "center",
@@ -357,7 +357,10 @@ export default {
               "2019-6-10",
               "2019-6-11",
               "2019-6-12"
-            ]
+            ],
+            axisLabel:{
+    		       interval: 0
+    	      },
           }
         ],
         yAxis: [

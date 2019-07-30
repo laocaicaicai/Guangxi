@@ -26,15 +26,15 @@
             <div class="timeOpt">
               <div>
                 <span>开始时间：</span>
-                <el-date-picker v-model="startTime" type="date" placeholder="选择开始日期" size="mini"></el-date-picker>
+                <el-date-picker v-model="startTime" type="date" placeholder="选择开始日期" size="mini" style="width:150px;"></el-date-picker>
               </div>
               <div>
                 <span>结束时间：</span>
-                <el-date-picker type="date" placeholder="选择结束日期" size="mini" v-model="endTime"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择结束日期" size="mini" v-model="endTime" style="width:150px;"></el-date-picker>
               </div>
               <div>
                 <span>数据类型：</span>
-                <el-select v-model="value" placeholder="请选择" size="mini" style="200px">
+                <el-select v-model="value" placeholder="请选择" size="mini" style="width:150px;">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -223,8 +223,9 @@ export default {
         this.currentImg = this.imgArr[this.currImgIndex].path;
          this.isPlay =false
    },
-        tableRowStyle({ row, rowIndex }) {
-      return 'background-color:#e8ebf1'
+   //  修改td颜色
+    tableRowStyle({ row, rowIndex }) {
+      return 'background-color:#e8ebf1;'
     },
     // 修改table header的背景色
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
@@ -300,7 +301,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss"   scoped>
 .pmTwo {
   .el-table  
    /deep/.warning-row {
@@ -313,29 +314,30 @@ export default {
   width: 100%;
   height: 100%;
    padding: 10px 30px 30px 25px!important;
-  .el-select-dropdown__item {
+  /deep/ .el-select-dropdown__item {
     border-top: 0;
     border-bottom: 0;
   }
-  .el-input__inner  {
+ 
+  /deep/.el-table td {
+     border-bottom:0.5px   solid #ccc;
+  }
+   /deep/ .el-tooltip__popper {
+          z-index:4000;
+   }
+  /deep/.el-table th.is-leaf {
+     border-bottom:0.5px   solid #000;
+  }
+  /deep/ .el-input__inner  {
                 background-color:rgb(232,235,241) !important;
+                
   }
-  .el-input--mini .el-input__inner {
-    width: 150px;
+ /deep/  .el-input--mini .el-input__inner {
+  
  
   }
  
-  // .el-table td {
-  //        background:   #e8ebf1;
-  //        border-bottom:  0.5px solid #ccc;
-  //        text-align: center;
-  // }
-  //  .el-table th {
-  //       background:   #e8ebf1;
-  //      border-bottom:  1px solid rgb(51,51,51);
-  //       text-align: center;
-  //  }
-   
+  
   padding: 30px;
 
   .timeOpt {
@@ -361,9 +363,7 @@ export default {
       }
      
     }
-  //    .el-input{
-  //    width: 150px;
-  // }
+ 
   }
   .imgContainer {
     width: 100%;
@@ -406,21 +406,21 @@ export default {
     border-left: 5px solid rgb(19, 111, 205);
     padding-left: 10px;
     margin-bottom: 15px;
-    .el-breadcrumb {
+    /deep/ .el-breadcrumb {
       line-height: 30px;
     }
 
-    .el-breadcrumb__inner {
+     /deep/.el-breadcrumb__inner {
       color: #000;
     }
      .titleshow{
         font-size: 20px;
-        .el-breadcrumb__inner{
+        /deep/ .el-breadcrumb__inner{
            font-weight: bold!important;
         }
       } 
     .product{
-        .el-breadcrumb__inner{
+       /deep/  .el-breadcrumb__inner{
           color: #999
         }
     }

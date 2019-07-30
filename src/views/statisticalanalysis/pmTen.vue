@@ -414,7 +414,10 @@ export default {
           {
             type: "category",
             data: cityOptions,
-            name: "城市"
+            name: "城市",
+            axisLabel:{
+    		       interval: 0
+    	      },
           }
         ],
         yAxis: [
@@ -511,6 +514,9 @@ export default {
               "2019-6-11",
               "2019-6-12"
             ],
+            axisLabel:{
+    		       interval: 0
+    	      },
             name: "城市"
           }
         ],

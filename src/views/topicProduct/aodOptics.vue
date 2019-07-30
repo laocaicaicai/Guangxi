@@ -1,5 +1,5 @@
 <template>
-  <div class="pmTwo">
+  <div class="aodOptics">
     <!-- 头部标题部分 -->
     <div class="titleBread">
       <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -26,11 +26,11 @@
             <div class="timeOpt">
               <div>
                 <span>开始时间：</span>
-                <el-date-picker v-model="startTime" type="date" placeholder="选择开始日期" size="mini"></el-date-picker>
+                <el-date-picker v-model="startTime" type="date" placeholder="选择开始日期" size="mini" style="width:150px;"></el-date-picker>
               </div>
               <div>
                 <span>结束时间：</span>
-                <el-date-picker type="date" placeholder="选择结束日期" size="mini" v-model="endTime"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择结束日期" size="mini" v-model="endTime" style="width:150px;"></el-date-picker>
               </div>
               
               <div>
@@ -42,17 +42,24 @@
             </div>
 
             <div class="mian">
-              <el-table :data="tableData" style="width: 100%" size="small">
+              <el-table :data="tableData" style="width: 100%" size="small"  :row-class-name="tableRowClassName"  :row-style="tableRowStyle"
+    :header-cell-style="tableHeaderColor">
                 <el-table-column prop="name" label="名称" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="date" label="时间" show-overflow-tooltip width="150"></el-table-column>
                 <el-table-column prop="address" label="操作" show-overflow-tooltip width="100">
-                  <template>
+                  <template slot-scope="scope">
                     <el-button
                       type="text"
                       style="color:#000;"
                       size="mini"
                       @click="singDownLoad()"
                     >下载</el-button>
+                    <el-button
+                      type="text"
+                      style="color:#000;"
+                      size="mini"
+                     @click="search(scope.$index)"
+                    >查看</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -76,7 +83,7 @@ import img9 from "../../assets/img/AOD/201907121600AOD.png";
 import img10 from "../../assets/img/AOD/201907121700AOD.png";
 import img11 from "../../assets/img/AOD/201907121800AOD.png";
 import gif from "../../assets/img/gif/AOD.gif";
-import { clearInterval, setInterval } from "timers";
+
 export default {
   data() {
     return {
@@ -210,6 +217,28 @@ export default {
     }
   },
   methods: {
+     search($index){
+     this.currImgIndex = $index
+        this.currentImg = this.imgArr[this.currImgIndex].path;
+         this.isPlay =false
+   },
+     //  修改td颜色
+    tableRowStyle({ row, rowIndex }) {
+      return 'background-color:#e8ebf1;'
+    },
+    // 修改table header的背景色
+    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #e8ebf1;'
+      }
+    },
+
+     tableRowClassName({row, rowIndex}) {
+        if (rowIndex === this.currImgIndex) {
+          return 'warning-row';
+        } 
+        return '';
+      },
     // 综合条件生成gif   下载
     downLoadGif() {
       var link = document.createElement("a");
@@ -271,32 +300,40 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.pmTwo {
+<style lang="scss" scoped>
+.aodOptics {
+  /deep/ .el-table  
+  .warning-row {
+    background: oldlace !important;
+  }
+
+  /deep/.el-table .success-row {
+    background: #f0f9eb !important;
+  }
   .download{
     text-align: center;
   }
   width: 100%;
   height: 100%;
    padding: 10px 30px 30px 25px!important;
-  .el-select-dropdown__item {
+  /deep/ .el-select-dropdown__item {
     border-top: 0;
     border-bottom: 0;
   }
-  .el-input__inner  {
+ /deep/  .el-input__inner  {
                 background-color:rgb(232,235,241) !important;
   }
-  .el-input--mini .el-input__inner {
-    width: 150px;
+  // .el-input--mini .el-input__inner {
+  //   width: 150px;
  
-  }
-  .el-table td {
-        background:   #e8ebf1;
+  // }
+ /deep/  .el-table td {
+       
          border-bottom:  0.5px solid #ccc;
          text-align: center;
   }
-   .el-table th {
-       background:   #e8ebf1;
+  /deep/  .el-table th {
+      
        border-bottom:  1px solid rgb(51,51,51);
         text-align: center;
    }
@@ -368,21 +405,21 @@ export default {
     border-left: 5px solid rgb(19, 111, 205);
     padding-left: 10px;
     margin-bottom: 15px;
-    .el-breadcrumb {
+    /deep/ .el-breadcrumb {
       line-height: 30px;
     }
 
-    .el-breadcrumb__inner {
+   /deep/  .el-breadcrumb__inner {
       color: #000;
     }
      .titleshow{
         font-size: 20px;
-        .el-breadcrumb__inner{
+        /deep/ .el-breadcrumb__inner{
            font-weight: bold!important;
         }
       } 
     .product{
-        .el-breadcrumb__inner{
+       /deep/ .el-breadcrumb__inner{
           color: #999
         }
     }

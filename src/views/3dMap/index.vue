@@ -40,12 +40,25 @@
 import $ from 'jquery'
 export default {
     mounted() {
-        this.init()
+        var timer = null
+        let that = this;
+        clearTimeout(timer)
+        // 异步加载模仿  避免页面卡顿
+        timer = setTimeout(function () {
+            that.init()
+        }, 100)
+
+    },
+    beforeDestroy() {
+        // 组件卸载及时释放资源避免占用内存
+        if(this.viewer!=null) {
+             this.viewer = null;
+        }
     },
     data() {
         return {
             classicon: "el-icon-video-camera",
-            czmlData: null,
+            czmlData: null, //全局czml 轨道数据
             list: [{
                     id: 'Satellite/Geoeye1',
                     name: 'NPP卫星',
@@ -75,13 +88,12 @@ export default {
                     checked: false
                 },
 
-            ]
+            ],
+            viewer:null ,// 3D地球实例化初始值
         }
     },
     methods: {
         init() {
-
-
 
             let that = this
 
@@ -89,19 +101,19 @@ export default {
 
             this.czmlData = new Map();
 
-             var guge=new Cesium.UrlTemplateImageryProvider({
-	url:'http://mt0.google.cn/vt/lyrs=y@112&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}&s=Gali',
-	tilingScheme:new Cesium.WebMercatorTilingScheme(),
-	minimumLevel:1,
-	maximumLevel:20
-});
-var viewer=new Cesium.Viewer("main",{
-	baseLayerPicker : false,
-  imageryProvider : guge,
-     timeline: true,
+            var guge = new Cesium.UrlTemplateImageryProvider({
+                url: 'http://mt0.google.cn/vt/lyrs=y@112&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}&s=Gali',
+                tilingScheme: new Cesium.WebMercatorTilingScheme(),
+                minimumLevel: 1,
+                maximumLevel: 20
+            });
+            var viewer = this.viewer=new Cesium.Viewer("main", {
+                baseLayerPicker: false,
+                imageryProvider: guge,
+                timeline: true,
 
                 fullscreenButton: true,
-                infoBox: false,
+                infoBox: true,
                 homeButton: true,
                 selectionIndicator: false,
                 geocoder: false,
@@ -109,64 +121,65 @@ var viewer=new Cesium.Viewer("main",{
                 navigationInstructionsInitiallyVisible: false,
                 navigationHelpButton: false,
                 animation: true,
-                shouldAnimate: false
-});
-var terrain=new Cesium.createWorldTerrain({
-         requestWaterMask:true,
-         requestVertexNormals:true,
+                shouldAnimate: true
+            });
+            var terrain = new Cesium.createWorldTerrain({
+                requestWaterMask: true,
+                requestVertexNormals: true,
 
-  });
- viewer.terrainProvider=terrain;//加入世界地形图
-    viewer.camera.setView({
-        // Cesium的坐标是以地心为原点，一向指向南美洲，一向指向亚洲，一向指向北极州
-        // fromDegrees()方法，将经纬度和高程转换为世界坐标
-        destination:Cesium.Cartesian3.fromDegrees(97.48,30.67,20000000.0),
-        orientation:{
-          // 指向
-        //   heading:Cesium.Math.toRadians(90,0),
-          // 视角
-        //   pitch:Cesium.Math.toRadians(-90),
-          roll:0.0
-        }
-      });
+            });
+            viewer.terrainProvider = terrain; //加入世界地形图
+            viewer.camera.setView({
+                // Cesium的坐标是以地心为原点，一向指向南美洲，一向指向亚洲，一向指向北极州
+                // fromDegrees()方法，将经纬度和高程转换为世界坐标
+                destination: Cesium.Cartesian3.fromDegrees(97.48, 30.67, 20000000.0),
+                orientation: {
+                   
+                    roll: 0.0
+                }
+            });
 
-      viewer.animation.viewModel.dateFormatter = localeDateTimeFormatter
-viewer.animation.viewModel.timeFormatter = localeTimeFormatter
-viewer.timeline.makeLabel = function (time) { return localeDateTimeFormatter(time) }
+            viewer.animation.viewModel.dateFormatter = localeDateTimeFormatter
+            viewer.animation.viewModel.timeFormatter = localeTimeFormatter
+            viewer.timeline.makeLabel = function (time) {
+                return localeDateTimeFormatter(time)
+            }
 
-// Date formatting to a global form
-function localeDateTimeFormatter(datetime, viewModel, ignoredate) {
-    var julianDT = new Cesium.JulianDate();
-    Cesium.JulianDate.addHours(datetime,8,julianDT)
-    var gregorianDT= Cesium.JulianDate.toGregorianDate(julianDT)
-    var objDT;
-    if (ignoredate)
-        objDT = '';
-    else {
-        objDT = new Date(gregorianDT.year, gregorianDT.month - 1, gregorianDT.day);
-        objDT = gregorianDT.year  + '年' +objDT.toLocaleString("zh-cn", { month: "short" })+ gregorianDT.day + '日' ;
-        if (viewModel || gregorianDT.hour + gregorianDT.minute === 0)
-        return objDT;
-        objDT += ' ';
-    }
-    return objDT + Cesium.sprintf("%02d:%02d:%02d", gregorianDT.hour, gregorianDT.minute, gregorianDT.second);
-}
+            // Date formatting to a global form
+            function localeDateTimeFormatter(datetime, viewModel, ignoredate) {
+                var julianDT = new Cesium.JulianDate();
+                Cesium.JulianDate.addHours(datetime, 8, julianDT)
+                var gregorianDT = Cesium.JulianDate.toGregorianDate(julianDT)
+                var objDT;
+                if (ignoredate)
+                    objDT = '';
+                else {
+                    objDT = new Date(gregorianDT.year, gregorianDT.month - 1, gregorianDT.day);
+                    objDT = gregorianDT.year + '年' + objDT.toLocaleString("zh-cn", {
+                        month: "short"
+                    }) + gregorianDT.day + '日';
+                    if (viewModel || gregorianDT.hour + gregorianDT.minute === 0)
+                        return objDT;
+                    objDT += ' ';
+                }
+                return objDT + Cesium.sprintf("%02d:%02d:%02d", gregorianDT.hour, gregorianDT.minute, gregorianDT.second);
+            }
 
-function localeTimeFormatter(time, viewModel) {
-    return localeDateTimeFormatter(time, viewModel, true);
-}
+            function localeTimeFormatter(time, viewModel) {
+                return localeDateTimeFormatter(time, viewModel, true);
+            }
             viewer._cesiumWidget._creditContainer.style.display = "none";
             viewer.camera.setView({
-        // Cesium的坐标是以地心为原点，一向指向南美洲，一向指向亚洲，一向指向北极州
-        // fromDegrees()方法，将经纬度和高程转换为世界坐标
-              destination:Cesium.Cartesian3.fromDegrees(97.48,30.67,20000000.0),
-              orientation:{
-                // 指向
-              //   heading:Cesium.Math.toRadians(90,0),
-                // 视角
-              //   pitch:Cesium.Math.toRadians(-90),
-                roll:0.0
-              }
+                // Cesium的坐标是以地心为原点，一向指向南美洲，一向指向亚洲，一向指向北极州
+                // fromDegrees()方法，将经纬度和高程转换为世界坐标
+                destination: Cesium.Cartesian3.fromDegrees(97.48, 30.67, 20000000.0),
+                orientation: {
+                    // 指向
+                    //   heading:Cesium.Math.toRadians(90,0),
+                    // 视角
+                    //   pitch:Cesium.Math.toRadians(-90),
+                    roll: 0.0
+                }
             });
             var property = new Cesium.SampledPositionProperty();
 
@@ -216,7 +229,7 @@ function localeTimeFormatter(time, viewModel) {
                     var value = czmlobj.entities._entities._array[i];
                     that.czmlData.set(key, value);
                 }
-                console.log(that.czmlData)
+                
             })
 
         },

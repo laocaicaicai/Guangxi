@@ -141,6 +141,45 @@ export default {
   }
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" >
+<style style lang="scss" scoped>
+.side-nav {
+   padding-bottom:100px;
+  ul {
+  list-style: none;
+  text-align: left;
+  margin: 0;
+  /* margin-left: 5px; */
+  padding-left: 0;
+  border-top: 0;
+}
+li {
+  color: rgb(166, 172, 192);
+ 
+}
+li:last-of-type {
+ 
+}
+li > span {
+  cursor: pointer;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+  display: block;
+  padding-left: 20px;
+  position: relative;
+}
+li > span:visited {
+}
+em {
+  /* float: right;
+  height: 50px;
+  display: block;
+  line-height: 50px; */
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+} 
 </style>
 
