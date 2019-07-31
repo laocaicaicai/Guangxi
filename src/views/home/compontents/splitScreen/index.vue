@@ -1005,7 +1005,7 @@ export default {
                     padding: 0;
 
                     li {
-                        border-bottom: 0.1px solid #909399;
+                        //border-bottom: 0.1px solid #909399;
                     }
 
                     li:last-of-type {
@@ -1108,7 +1108,7 @@ export default {
                 padding: 0;
 
                 li {
-                    border-bottom: 0.1px solid #909399;
+                   // border-bottom: 0.1px solid #909399;
                 }
 
                 li:last-of-type {
@@ -1160,7 +1160,7 @@ export default {
                 padding: 0;
 
                 li {
-                    border-bottom: 0.1px solid #909399;
+                    //border-bottom: 0.1px solid #909399;
                 }
 
                 li:last-of-type {
@@ -1243,7 +1243,7 @@ export default {
                 padding: 0;
 
                 li {
-                    border-bottom: 0.1px solid #909399;
+                    //border-bottom: 0.1px solid #909399;
                 }
 
                 li:last-of-type {
@@ -1349,7 +1349,7 @@ export default {
                 padding: 0;
 
                 li {
-                    border-bottom: 0.1px solid #909399;
+                    //border-bottom: 0.1px solid #909399;
                 }
 
                 li:last-of-type {
@@ -1454,7 +1454,7 @@ export default {
                 padding: 0;
 
                 li {
-                    border-bottom: 0.1px solid #909399;
+                   // border-bottom: 0.1px solid #909399;
                 }
 
                 li:last-of-type {

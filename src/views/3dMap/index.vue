@@ -16,20 +16,7 @@
         </ul>
     </div>
 
-    <div id="intro">
-        <h4>高分二号 <i class="el-icon-video-camera-solid"></i>
-        </h4>
-        <h5>数据信息</h5>
-        <div class="introlist">
-            该卫星 最近一次经过广西壮族自治区的时间是2019年6月1号,
-            该卫星 最近一次经过广西壮族自治区的时间是2019年6月1号,
-            该卫星 最近一次经过广西壮族自治区的时间是2019年6月1号
-        </div>
-        <h5>卫星详情</h5>
-        <div class="introlist">
-            高分二号卫星是太阳同步回归轨道卫星，有效荷载2台高分辨率相机和4台中分辨率相机
-        </div>
-    </div>
+    
     <div id="main" style="width: 100%; height:89vh;">
 
     </div>
@@ -52,6 +39,7 @@ export default {
     beforeDestroy() {
         // 组件卸载及时释放资源避免占用内存
         if(this.viewer!=null) {
+            this.viewer.shouldAnimate =false
              this.viewer = null;
         }
     },
@@ -255,8 +243,9 @@ export default {
 </script>
 
 <style lang="scss">
-.threeMap {
 
+.threeMap {
+    
     #intro {
         position: absolute;
         width: 300px;

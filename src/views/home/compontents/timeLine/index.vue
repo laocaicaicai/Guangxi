@@ -93,7 +93,7 @@ export default {
         return {
             index: 0,
             timer:null, // 全局定时器
-            currentDate: '2019年6月23日',
+            currentDate: '2019年7月25日',
             isPlay: false,
             playIcon: 'el-icon-video-play',
             precentLength: 3,
@@ -102,43 +102,43 @@ export default {
             countIndex:0,
 
             timeList: [{
-                    date: '2019年6月23日',
+                    date: '2019年7月25日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月24日',
+                    date: '2019年7月26日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月25日',
+                    date: '2019年7月27日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月26日',
+                    date: '2019年7月28日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月27日',
+                    date: '2019年7月29日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月28日',
+                    date: '2019年7月30日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
                 },
                 {
-                    date: '2019年6月29日',
+                    date: '2019年7月31日',
                     hour: [
                         '10', '11', '12', '13', '14'
                     ]
@@ -166,10 +166,7 @@ export default {
                 this.timer=  setInterval(function(){
                      that.houerClick(that.playIndex[that.countIndex][0], that.playIndex[that.countIndex][1])
                    that.countIndex++
-               
-                  
-                //    that.dateIndex = that.playIndex[that.countIndex][0]
-                //     that.houerIndex = that.playIndex[that.countIndex][1]
+        
                    if(that.countIndex==allprogressLen) {
                        that.countIndex=0
                 
@@ -180,10 +177,20 @@ export default {
             this.isPlay = !this.isPlay;
         },
         houerClick(index, index1) {
+           
             this.dateIndex = index
             this.houerIndex = index1
              var arr = this.houerList
-
+             var currentArr= [index, index1]
+          
+             var  all =  this.playIndex
+            //   for(var i= 0;i<all.length;i++){
+            //       if(currentArr.toString()==all[i].toString()) {
+            //            this.countIndex =i
+                       
+            //       }
+            //   }
+        
             var len = 0;
             if (index < 1) {
                 len = index1 + 1
@@ -193,7 +200,7 @@ export default {
                 len = index * 5 + index1 + 1
 
             }
-            console.log(this.playIndex)
+            //console.log(this.playIndex)
             //  总长度
             var allprogressLen = arr[0].length * arr.length
 
